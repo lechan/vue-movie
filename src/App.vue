@@ -1,33 +1,38 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <el-button @click.native="startHacking">Let's do it</el-button>
+    <m-search></m-search>
+    <m-tab></m-tab>
   </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+import search from './components/search.vue';
+import tab from './components/tab.vue';
+
 export default {
   data () {
     return {
-      msg: 'Use Vue 2.0 Today!'
+      movieType: '',
+      keyword: ''
     }
   },
 
   methods: {
-    startHacking () {
-      this.$notify({
-        title: 'It Works',
-        message: 'We have laid the groundwork for you. Now it\'s your time to build something epic!',
-        duration: 6000
-      })
-    }
+    
+  },
+  components: {
+    'm-search': search,
+    'm-tab': tab
   }
 }
 </script>
 
-<style>
+<style lang="less">
 body {
   font-family: Helvetica, sans-serif;
+  margin: 0;
+}
+#app{
+  overflow: hidden;
 }
 </style>

@@ -1,8 +1,9 @@
-const resolve = require('path').resolve
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const url = require('url')
-const publicPath = ''
+const resolve = require('path').resolve;
+const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const url = require('url');
+const publicPath = '';
 
 module.exports = (options = {}) => ({
   entry: {
@@ -28,6 +29,13 @@ module.exports = (options = {}) => ({
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader']
+      },
+      {
+        test: /\.less$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'postcss-loader', 'less-loader']
+        })
       },
       {
         test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,

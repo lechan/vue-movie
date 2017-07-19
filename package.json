@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "element-ui": "^1.1.2",
-    "vue": "^2.1.8"
+    "vue": "^2.1.8",
+    "vue-infinite-scroll": "^2.0.1",
+    "vue-masonry": "^0.10.3"
   },
   "engines": {
     "node": ">=6"

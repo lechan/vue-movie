@@ -1,19 +1,28 @@
 <template>
-  <ul class="movie-list" v-loading.body="loading">
-    <li v-for="item in movieData" :key="item.id" @click="showDetail(item.id)">
-      <el-card :body-style="{ padding: '5px' }">
-        <div class="img-wrap"><img :src="item.film_imgs[0]"></div>
-        <div class="img-desc">
-          <h3>{{item.film_name}}</h3>
-          <p>{{ item.publish_time|formatMovieDate }}</p>
-        </div>
-      </el-card>
-    </li>
-  </ul>
+  <div class="movie-list-container">
+    <ul class="movie-list" v-loading.body="loading" v-masonry transition-duration="0.3s" item-selector=".movie-item" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+      <li v-for="item in movieData[typeCode]" :key="item.id" @click="showDetail(item.id)" v-masonry-tile class="movie-item">
+        <el-card :body-style="{ padding: '5px' }">
+          <div class="img-wrap"><img :src="item.film_imgs[0]"></div>
+          <div class="img-desc">
+            <h3>{{item.film_name}}</h3>
+            <p>{{ item.publish_time|formatMovieDate }}</p>
+          </div>
+        </el-card>
+      </li>
+    </ul>
+    <div class="more" v-loading.body="moreLoading" v-if="moreLoading"></div>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {getListData,searchListData,formatDate} from '../utils/tool';
+  import Vue from 'vue';
+  import VueMasonryPlugin from 'vue-masonry';
+  import InfiniteScroll from 'vue-infinite-scroll';
+
+  Vue.use(VueMasonryPlugin);
+  Vue.use(InfiniteScroll);
 
   export default {
     props:{
@@ -23,33 +32,61 @@
       keyword: {
         type: String,
         default: ''
+      },
+      index: {
+        type: String
       }
     },
     data() {
       return {
-        movieData : [],
-        p:1,
+        movieData : {},
+        p:[],
         pageSize:20,
         loading: false,
-        btnLoading: false
+        moreLoading: false
       };
     },
     methods: {
       showDetail(id) {
         console.log(id);
+      },
+      renderList(p) {
+        getListData("FilmDetail",p,this.pageSize,this.typeCode,(data) => {
+          const arr = this.movieData[this.typeCode] ? this.movieData[this.typeCode] : [];
+          this.movieData[this.typeCode] = [...arr, ...data];
+          if(p === 1){
+            this.loading = false;
+          }else{
+            this.moreLoading = false;
+          }
+        });
+      },
+      loadMore() {
+        if(!this.moreLoading){
+          this.moreLoading = true;
+          this.p[this.index]++;
+          this.renderList(this.p[this.index]);
+        }
       }
     },
     filters: {
       formatMovieDate(date){
-        return formatDate(date.getTime(),'yyyy-MM-dd');
+        return date ? formatDate(date.getTime(),'yyyy-MM-dd'):'';
       }
     },
     created() {
       this.loading = true;
-      getListData("FilmDetail",this.p,this.pageSize,this.typeCode,(data) => {
-        this.movieData = data;
-        this.loading = false;
-      });
+      this.p[this.index] = 1;
+      this.renderList(this.p[this.index]);
+    },
+    watch: {
+      typeCode(){
+        if(!this.p[this.index]){
+          this.p[this.index] = 1;
+          this.loading = true;
+          this.renderList(this.p[this.index]);
+        }
+      }
     }
   };
 </script>
@@ -77,7 +114,6 @@
       }
       .img-wrap {
         width: 100%;
-        height: 300px;
         overflow: hidden;
         img {
           width: 100%;
@@ -107,5 +143,10 @@
         }
       }
     }
+  }
+
+  .more {
+    height: 40px;
+    padding: 10px 0px;
   }
 </style>

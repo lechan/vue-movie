@@ -1,10 +1,9 @@
 <template>
   <div class="tab-bar">
-    <el-tabs v-model="activeName" @tab-click="handleTabClick">
-      <el-tab-pane :label="item.type_name" :name="item.type_code" v-for="(item,index) in tabData" :key="item.id">
-        <v-list :type-code="item.type_code" v-if="index === 0"></v-list>
-      </el-tab-pane>
+    <el-tabs v-model="typeCode" @tab-click="handleTabClick">
+      <el-tab-pane :label="item.type_name" :name="item.type_code" v-for="(item,index) in tabData" :key="item.id"></el-tab-pane>
     </el-tabs>
+    <m-list :typeCode="typeCode" :index="currentIndex"></m-list>
   </div>
 </template>
 
@@ -15,23 +14,25 @@
   export default {
     data() {
       return {
-        activeName: '',
+        currentIndex : '0',
+        typeCode: '10001',
         tabData : []
       };
     },
     methods: {
       handleTabClick(tab, event) {
-        console.log(tab, event);
+        this.currentIndex = tab.index;
+        this.typeCode = tab.name;
       }
     },
     created() {
       getTabData((data) => {
         this.tabData = data;
-        this.activeName = data[0].type_code;
+        this.typeCode = data[this.currentIndex].type_code;
       });
     },
     components: {
-      'v-list' : list
+      'm-list' : list
     }
   };
 </script>

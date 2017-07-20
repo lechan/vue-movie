@@ -65,12 +65,13 @@ const getDetailData = (className, id, callBack) => {
 };
 
 //模糊搜索获取列表数据
-const searchListData = (className, keyword, p, pNum, callBack) => {
+const searchListData = (className, keyword, p, pNum, type, callBack) => {
   let Post = AV.Object.extend(className);
   let post = new Post();
   let query = new AV.Query(Post);
   let listObj = [];
   query.descending('publish_time');
+  query.equalTo('type_code', type);
   query.exists('film_imgs');
   query.contains('film_name', keyword);
   query.limit(pNum);

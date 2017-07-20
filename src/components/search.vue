@@ -26,17 +26,28 @@
 
 <script type="text/ecmascript-6">
 export default {
-  data() {
-    return {
-      searchInput : ''
+  props: {
+    keyword: {
+      type: String,
+      default: ''
     }
   },
-  methods : {
-    handleSearchBtn : function(ev){
-      console.log(ev);
+  data() {
+    return {
+      searchInput: ''
+    }
+  },
+  methods: {
+    handleSearchBtn: function(ev){
+      this.$emit('searchInputHandle',this.searchInput);
     },
-    handleKeyEnter : function(ev){
-      alert('你按回车键了');
+    handleKeyEnter: function(ev){
+      this.$emit('searchInputHandle',this.searchInput);
+    }
+  },
+  watch: {
+    keyword() {
+      this.searchInput = this.keyword;
     }
   }
 }

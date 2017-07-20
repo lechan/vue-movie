@@ -3,7 +3,6 @@
     <el-tabs v-model="typeCode" @tab-click="handleTabClick">
       <el-tab-pane :label="item.type_name" :name="item.type_code" v-for="(item,index) in tabData" :key="item.id"></el-tab-pane>
     </el-tabs>
-    <m-list :typeCode="typeCode" :index="currentIndex"></m-list>
   </div>
 </template>
 
@@ -12,6 +11,12 @@
   import list from './list.vue';
 
   export default {
+    props: {
+      keyword : {
+        type : String,
+        default : ''
+      }
+    },
     data() {
       return {
         currentIndex : '0',
@@ -31,8 +36,11 @@
         this.typeCode = data[this.currentIndex].type_code;
       });
     },
-    components: {
-      'm-list' : list
+    watch: {
+      typeCode() {
+        this.$emit('searchInputHandle','');
+        this.$emit('tabHandle',this.typeCode);
+      }
     }
   };
 </script>
@@ -41,5 +49,8 @@
   .tab-bar {
     width: 1200px;
     margin: 0 auto;
+    .el-tabs {
+      height: 60px;
+    }
   }
 </style>

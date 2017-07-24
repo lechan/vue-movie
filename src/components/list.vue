@@ -1,14 +1,16 @@
 <template>
   <div class="movie-list-container" v-loading.body="loading">
     <ul class="movie-list" v-show="!noData" v-masonry transition-duration="0.2s" item-selector=".movie-item" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
-      <li v-for="item in (keyword === '' ? movieData[typeCode] : searchMovieData)" :key="item.id" @click="showDetail(item.id)" v-masonry-tile class="movie-item">
-        <el-card :body-style="{ padding: '5px' }">
-          <div class="img-wrap"><img :src="item.film_imgs[0]"></div>
-          <div class="img-desc">
-            <h3>{{item.film_name}}</h3>
-            <p>{{ item.publish_time|formatMovieDate }}</p>
-          </div>
-        </el-card>
+      <li v-for="item in (keyword === '' ? movieData[typeCode] : searchMovieData)" :key="item.id" v-masonry-tile class="movie-item">
+        <router-link :to="{ path: 'detail', query: { id: item.id }}">
+          <el-card :body-style="{ padding: '5px' }">
+            <div class="img-wrap"><img :src="item.film_imgs[0]"></div>
+            <div class="img-desc">
+              <h3>{{item.film_name}}</h3>
+              <p>{{ item.publish_time|formatMovieDate }}</p>
+            </div>
+          </el-card>
+        </router-link>
       </li>
     </ul>
     <div class="noData" v-show="noData">
@@ -51,9 +53,6 @@
       };
     },
     methods: {
-      showDetail(id) {
-        console.log(id);
-      },
       renderList(p) {
         if(p === 1){
           this.loading = true;
@@ -85,7 +84,7 @@
         }
       },
       loadMore() {
-        if(!this.moreLoading && (this.p[this.typeCode] > 1 || this.searchPageNumber > 1)){
+        if(!this.$route.query.id && !this.moreLoading && (this.p[this.typeCode] > 1 || this.searchPageNumber > 1)){
           this.moreLoading = true;
           this.renderList(this.keyword === ''?this.p[this.typeCode]:this.searchPageNumber);
         }
@@ -134,7 +133,7 @@
 <style lang="less">
   .movie-list-container{
     width: 1200px;
-    margin: 0 auto;
+    margin: 130px auto 0px;
     .movie-list {
       width: 100%;
       min-height: 400px;
@@ -148,6 +147,9 @@
         margin: 10px;
         list-style: none;
         cursor: pointer;
+        a {
+          text-decoration: none;
+        }
         .el-card {
           box-shadow: none;
           transition: all .2s linear;

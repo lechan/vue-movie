@@ -48,6 +48,7 @@ export default {
   watch: {
     keyword() {
       this.searchInput = this.keyword;
+      this.$router.push('/');
     }
   }
 }

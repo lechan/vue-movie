@@ -15,31 +15,32 @@
       keyword : {
         type : String,
         default : ''
+      },
+      typeCode: {
+        type: String
       }
     },
     data() {
       return {
         currentIndex : '0',
-        typeCode: '10001',
         tabData : []
       };
     },
     methods: {
       handleTabClick(tab, event) {
         this.currentIndex = tab.index;
-        this.typeCode = tab.name;
       }
     },
     created() {
       getTabData((data) => {
         this.tabData = data;
-        this.typeCode = data[this.currentIndex].type_code;
       });
     },
     watch: {
       typeCode() {
         this.$emit('searchInputHandle','');
         this.$emit('tabHandle',this.typeCode);
+        this.$router.push({ path: '/list', query: { typeCode: this.typeCode }});
       }
     }
   };

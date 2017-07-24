@@ -1,20 +1,23 @@
 <template>
   <div id="app">
-    <m-search :keyword="keyword" @searchInputHandle="getKeyword"></m-search>
-    <m-tab :typeCode="typeCode" @searchInputHandle="getKeyword" @tabHandle="changeTypeCode"></m-tab>
-    <m-list :typeCode="typeCode" :keyword="keyword"></m-list>
+    <div class="header">
+      <m-search :keyword="keyword" @searchInputHandle="getKeyword"></m-search>
+      <m-tab :typeCode="typeCode" @searchInputHandle="getKeyword" @tabHandle="changeTypeCode"></m-tab>
+    </div>
+    <keep-alive>
+      <router-view :typeCode="typeCode" :keyword="keyword"></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import search from './components/search.vue';
 import tab from './components/tab.vue';
-import list from './components/list.vue';
 
 export default {
   data () {
     return {
-      typeCode: '10001',
+      typeCode: this.$route.query.typeCode||'10001',
       keyword: ''
     }
   },
@@ -29,8 +32,7 @@ export default {
   },
   components: {
     'm-search': search,
-    'm-tab': tab,
-    'm-list': list
+    'm-tab': tab
   }
 }
 </script>
@@ -42,5 +44,12 @@ body {
 }
 #app{
   overflow: hidden;
+  .header{
+    position: fixed;
+    top: 0px;
+    z-index: 1;
+    width: 100%;
+    background: #fff;
+  }
 }
 </style>

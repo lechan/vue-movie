@@ -1,6 +1,6 @@
 <template>
   <div class="tab-bar">
-    <el-tabs v-model="typeCode" @tab-click="handleTabClick">
+    <el-tabs v-model="currentTypeCode" @tab-click="handleTabClick">
       <el-tab-pane :label="item.type_name" :name="item.type_code" v-for="(item,index) in tabData" :key="item.id"></el-tab-pane>
     </el-tabs>
   </div>
@@ -23,12 +23,14 @@
     data() {
       return {
         currentIndex : '0',
+        currentTypeCode : this.typeCode,
         tabData : []
       };
     },
     methods: {
       handleTabClick(tab, event) {
         this.currentIndex = tab.index;
+        this.currentTypeCode = tab.name;
       }
     },
     created() {
@@ -37,10 +39,10 @@
       });
     },
     watch: {
-      typeCode() {
+      currentTypeCode() {
         this.$emit('searchInputHandle','');
-        this.$emit('tabHandle',this.typeCode);
-        this.$router.push({ path: '/list', query: { typeCode: this.typeCode }});
+        this.$emit('tabHandle',this.currentTypeCode);
+        this.$router.push({ path: '/list', query: { typeCode: this.currentTypeCode }});
       }
     }
   };

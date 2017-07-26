@@ -9,7 +9,6 @@ AV.init({
 //获取种类编码
 const getTabData = (callBack) => {
   let Post = AV.Object.extend('FilmType');
-  let post = new Post();
   let query = new AV.Query(Post);
   let listObj = [];
   query.limit(20);
@@ -26,9 +25,8 @@ const getTabData = (callBack) => {
 };
 
 //获取列表数据
-const getListData = (className, p, pNum, type, callBack) => {
-  let Post = AV.Object.extend(className);
-  let post = new Post();
+const getListData = (p, pNum, type, callBack) => {
+  let Post = AV.Object.extend('FilmDetail');
   let query = new AV.Query(Post);
   let listObj = [];
   query.descending('publish_time');
@@ -49,9 +47,8 @@ const getListData = (className, p, pNum, type, callBack) => {
 };
 
 //获取详情数据
-const getDetailData = (className, id, callBack) => {
-  let Post = AV.Object.extend(className);
-  let post = new Post();
+const getDetailData = (id, callBack) => {
+  let Post = AV.Object.extend('FilmDetail');
   let query = new AV.Query(Post);
   let listObj = {};
   query.equalTo('objectId', id);
@@ -65,8 +62,8 @@ const getDetailData = (className, id, callBack) => {
 };
 
 //模糊搜索获取列表数据
-const searchListData = (className, keyword, p, pNum, type, callBack) => {
-  let Post = AV.Object.extend(className);
+const searchListData = (keyword, p, pNum, type, callBack) => {
+  let Post = AV.Object.extend('FilmDetail');
   let post = new Post();
   let query = new AV.Query(Post);
   let listObj = [];

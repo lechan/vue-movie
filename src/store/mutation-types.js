@@ -1,1 +1,2 @@
 export const TYPECODE_CHANGE = 'TYPECODE_CHANGE';
+export const KEYWORD_CHANGE = 'KEYWORD_CHANGE';

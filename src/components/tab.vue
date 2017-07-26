@@ -28,6 +28,7 @@
       handleTabClick(tab, event) {
         this.currentIndex = tab.index;
         this.$store.dispatch('changeTab',tab.name);
+        this.$store.dispatch('changeInput','');
         this.$router.push({ path: '/list', query: { typeCode: this.typeCode }});
       }
     },

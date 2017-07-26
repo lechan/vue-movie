@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <div class="header">
-      <m-search :keyword="keyword" @searchInputHandle="getKeyword"></m-search>
-      <m-tab @searchInputHandle="getKeyword"></m-tab>
+      <m-search></m-search>
+      <m-tab></m-tab>
     </div>
     <keep-alive>
-      <router-view :keyword="keyword"></router-view>
+      <router-view></router-view>
     </keep-alive>
   </div>
 </template>
@@ -15,20 +15,6 @@ import search from './components/search.vue';
 import tab from './components/tab.vue';
 
 export default {
-  data () {
-    return {
-      keyword: ''
-    }
-  },
-
-  methods: {
-    getKeyword (keyword) {
-      this.keyword = keyword;
-    },
-    changeTypeCode(typeCode){
-      this.typeCode = typeCode;
-    }
-  },
   components: {
     'm-search': search,
     'm-tab': tab

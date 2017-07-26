@@ -1,7 +1,7 @@
 <template>
   <div class="movie-list-container" v-loading.body="loading">
     <ul class="movie-list" v-show="!noData" v-masonry transition-duration="0.2s" item-selector=".movie-item" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
-      <li v-for="item in (keyword === '' ? movieData[typeCode] : searchMovieData)" :key="item.id" v-masonry-tile class="movie-item">
+      <li v-for="item in (keyWord === '' ? movieData[typeCode] : searchMovieData)" :key="item.id" v-masonry-tile class="movie-item">
         <router-link :to="{ path: 'detail', query: { id: item.id }}">
           <el-card :body-style="{ padding: '5px' }">
             <div class="img-wrap"><img :src="item.film_imgs[0]"></div>
@@ -31,12 +31,6 @@
   Vue.use(InfiniteScroll);
 
   export default {
-    props:{
-      keyword: {
-        type: String,
-        default: ''
-      }
-    },
     data() {
       return {
         movieData : {},
@@ -55,8 +49,8 @@
         if(p === 1){
           this.loading = true;
         }
-        if(this.keyword === ''){
-          getListData("FilmDetail",p,this.pageSize,this.typeCode,(data) => {
+        if(this.keyWord === ''){
+          getListData(p,this.pageSize,this.typeCode,(data) => {
             const arr = this.movieData[this.typeCode] ? this.movieData[this.typeCode] : [];
             this.movieData[this.typeCode] = [...arr, ...data];
             this.p[this.typeCode]++;
@@ -65,7 +59,7 @@
             this.noData = this.movieData.length === 0 ? true : false;
           });
         }else{
-          searchListData("FilmDetail",this.keyword,p,this.pageSize,this.typeCode,(data) => {
+          searchListData(this.keyWord,p,this.pageSize,this.typeCode,(data) => {
             this.searchMovieData = [...this.searchMovieData, ...data];
             this.searchPageNumber++;
             this.loading = false;
@@ -84,12 +78,13 @@
       loadMore() {
         if(!this.$route.query.id && !this.moreLoading && (this.p[this.typeCode] > 1 || this.searchPageNumber > 1)){
           this.moreLoading = true;
-          this.renderList(this.keyword === ''?this.p[this.typeCode]:this.searchPageNumber);
+          this.renderList(this.keyWord === ''?this.p[this.typeCode]:this.searchPageNumber);
         }
       }
     },
     computed: mapGetters({
-      typeCode: 'getTypeCode'
+      typeCode: 'getTypeCode',
+      keyWord: 'getKeyWord'
     }),
     filters: {
       formatMovieDate(date){
@@ -99,9 +94,6 @@
     watch: {
       typeCode() {
         this.isEnd = false;
-        if(this.keyword !==''){
-          this.newKeyWord = '';
-        }
         if(!this.p[this.typeCode]){
           this.p[this.typeCode] = 1;
           this.loading = true;
@@ -110,12 +102,14 @@
           this.loading = false;
         }
       },
-      newKeyWord() {
-        this.searchMovieData.length = 0;
-        this.searchPageNumber = 1;
-        this.isEnd = false;
-        this.renderList(this.searchPageNumber);
-        this.$emit('searchInputHandle',this.newKeyWord);
+      keyWord() {
+        if(this.keyWord !== ''){
+          this.searchMovieData.length = 0;
+          this.searchPageNumber = 1;
+          this.isEnd = false;
+          this.renderList(this.searchPageNumber);
+          this.$store.dispatch('changeInput',this.keyWord);
+        }
       }
     }
   };

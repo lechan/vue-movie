@@ -15,7 +15,7 @@
               placeholder="请输入电影名称"
               icon="search"
               v-model="searchInput"
-              :on-icon-click="handleSearchBtn" @keyup.enter.native.13="handleKeyEnter">
+              :on-icon-click="handleSearch" @keyup.enter.native.13="handleSearch">
             </el-input>
           </div>
         </div>
@@ -25,30 +25,25 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapGetters } from 'vuex';
+
 export default {
-  props: {
-    keyword: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       searchInput: ''
     }
   },
   methods: {
-    handleSearchBtn: function(ev){
-      this.$emit('searchInputHandle',this.searchInput);
-    },
-    handleKeyEnter: function(ev){
-      this.$emit('searchInputHandle',this.searchInput);
+    handleSearch: function(){
+      this.$store.dispatch('changeInput',this.searchInput);
     }
   },
+  computed: mapGetters({
+    keyWord: 'getKeyWord'
+  }),
   watch: {
-    keyword() {
-      this.searchInput = this.keyword;
-      this.$router.push('/');
+    keyWord() {
+      this.searchInput = this.keyWord;
     }
   }
 }

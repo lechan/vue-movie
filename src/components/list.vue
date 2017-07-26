@@ -23,6 +23,7 @@
 <script type="text/ecmascript-6">
   import {getListData,searchListData,formatDate} from '../utils/tool';
   import Vue from 'vue';
+  import { mapGetters } from 'vuex';
   import VueMasonryPlugin from 'vue-masonry';
   import InfiniteScroll from 'vue-infinite-scroll';
 
@@ -31,9 +32,6 @@
 
   export default {
     props:{
-      typeCode: {
-        type: String
-      },
       keyword: {
         type: String,
         default: ''
@@ -90,20 +88,13 @@
         }
       }
     },
-    computed: {
-      newKeyWord() {
-        return this.keyword;
-      }
-    },
+    computed: mapGetters({
+      typeCode: 'getTypeCode'
+    }),
     filters: {
       formatMovieDate(date){
         return date ? formatDate(date.getTime(),'yyyy-MM-dd'):'';
       }
-    },
-    created() {
-      this.loading = true;
-      this.p[this.typeCode] = 1;
-      this.renderList(this.p[this.typeCode]);
     },
     watch: {
       typeCode() {

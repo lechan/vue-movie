@@ -1,0 +1,1 @@
+export const TYPECODE_CHANGE = 'TYPECODE_CHANGE';

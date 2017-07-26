@@ -2,10 +2,10 @@
   <div id="app">
     <div class="header">
       <m-search :keyword="keyword" @searchInputHandle="getKeyword"></m-search>
-      <m-tab :typeCode="typeCode" @searchInputHandle="getKeyword" @tabHandle="changeTypeCode"></m-tab>
+      <m-tab @searchInputHandle="getKeyword"></m-tab>
     </div>
     <keep-alive>
-      <router-view :typeCode="typeCode" :keyword="keyword"></router-view>
+      <router-view :keyword="keyword"></router-view>
     </keep-alive>
   </div>
 </template>
@@ -17,7 +17,6 @@ import tab from './components/tab.vue';
 export default {
   data () {
     return {
-      typeCode: this.$route.query.typeCode||'10001',
       keyword: ''
     }
   },

@@ -82,10 +82,12 @@
         }
       }
     },
-    computed: mapGetters({
-      typeCode: 'getTypeCode',
-      keyWord: 'getKeyWord'
-    }),
+    computed: {
+      ...mapGetters({
+        typeCode: 'getTypeCode',
+        keyWord: 'getKeyWord'
+      })
+    },
     filters: {
       formatMovieDate(date){
         return date ? formatDate(date.getTime(),'yyyy-MM-dd'):'';

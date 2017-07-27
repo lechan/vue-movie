@@ -38,9 +38,11 @@ export default {
       this.$store.dispatch('changeInput',this.searchInput);
     }
   },
-  computed: mapGetters({
-    keyWord: 'getKeyWord'
-  }),
+  computed: {
+    ...mapGetters({
+      keyWord: 'getKeyWord'
+    })
+  },
   watch: {
     keyWord() {
       this.searchInput = this.keyWord;

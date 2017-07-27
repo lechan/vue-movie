@@ -32,9 +32,11 @@
         this.$router.push({ path: '/list', query: { typeCode: this.typeCode }});
       }
     },
-    computed: mapGetters({
-      typeCode: 'getTypeCode'
-    }),
+    computed: {
+      ...mapGetters({
+        typeCode: 'getTypeCode'
+      })
+    },
     created() {
       getTabData((data) => {
         this.tabData = data;

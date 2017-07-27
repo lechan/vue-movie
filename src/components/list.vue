@@ -2,12 +2,12 @@
   <div class="movie-list-container" v-loading.body="loading">
     <ul class="movie-list" v-show="!noData" v-masonry transition-duration="0.2s" item-selector=".movie-item" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
       <li v-for="item in (keyWord === '' ? movieData[typeCode] : searchMovieData)" :key="item.id" v-masonry-tile class="movie-item">
-        <router-link :to="{ path: 'detail', query: {typeCode: typeCode, keyWord: keyWord, id: item.id }}">
+        <router-link :to="{ path: 'detail', query: keyWord === '' ? { typeCode: typeCode, id: item.id } : { typeCode: typeCode, keyWord: keyWord, id: item.id } }">
           <el-card :body-style="{ padding: '5px' }">
             <div class="img-wrap"><img :src="item.film_imgs[0]"></div>
             <div class="img-desc">
               <h3>{{item.film_name}}</h3>
-              <p>{{ item.publish_time|formatMovieDate }}</p>
+              <p>{{ item.publish_time | formatMovieDate }}</p>
             </div>
           </el-card>
         </router-link>

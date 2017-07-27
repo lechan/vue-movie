@@ -36,7 +36,7 @@ export default {
   methods: {
     handleSearch: function(){
       this.$store.dispatch('changeInput',this.searchInput);
-      this.$router.push({ path: '/list', query: { typeCode: this.typeCode, keyWord: this.keyWord }});
+      this.$router.push({ path: '/list', query: this.keyWord === '' ? { typeCode: this.typeCode } : { typeCode: this.typeCode, keyWord: this.keyWord } });
     }
   },
   computed: {
@@ -46,7 +46,7 @@ export default {
     })
   },
   created() {
-    this.$store.dispatch('changeInput',this.$route.query.keyWord);
+    this.$store.dispatch('changeInput',this.$route.query.keyWord || '');
   },
   watch: {
     keyWord() {

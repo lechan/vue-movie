@@ -13,19 +13,11 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapGetters } from 'vuex';
 import {getDetailData,formatDate} from '../utils/tool';
 import Clipboard from 'clipboard';
 
 export default {
-  props:{
-    typeCode: {
-      type: String
-    },
-    keyword: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       detailData: {},
@@ -34,7 +26,7 @@ export default {
   },
   methods: {
     renderDetail(id) {
-      getDetailData("FilmDetail",id,(data) => {
+      getDetailData(id,(data) => {
         this.detailData = data;
         this.detailLoading = false;
         const self = this;
@@ -46,6 +38,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      typeCode: 'getTypeCode',
+      keyWord: 'getKeyWord'
+    }),
     formatContent() {
       return this.detailData.film_des && this.detailData.film_des.replace(/\n/gi,'<br>');
     }

@@ -36,12 +36,17 @@ export default {
   methods: {
     handleSearch: function(){
       this.$store.dispatch('changeInput',this.searchInput);
+      this.$router.push({ path: '/list', query: { typeCode: this.typeCode, keyWord: this.keyWord }});
     }
   },
   computed: {
     ...mapGetters({
-      keyWord: 'getKeyWord'
+      keyWord: 'getKeyWord',
+      typeCode: 'getTypeCode'
     })
+  },
+  created() {
+    this.$store.dispatch('changeInput',this.$route.query.keyWord);
   },
   watch: {
     keyWord() {

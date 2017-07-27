@@ -40,7 +40,7 @@
     created() {
       getTabData((data) => {
         this.tabData = data;
-        this.$store.dispatch('changeTab',data[0].type_code);
+        this.$store.dispatch('changeTab',this.$route.query.typeCode || data[0].type_code);
       });
     }
   };

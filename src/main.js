@@ -14,6 +14,7 @@ import {
 } from 'element-ui';
 import App from './App.vue';
 import store from './store';
+import axios from 'axios';
 import list from './components/list.vue';
 import detail from './components/detail.vue';
 
@@ -30,7 +31,8 @@ Vue.use(Loading);
 
 
 Vue.prototype.$loading = Loading.service;
-Vue.prototype.$message = Message
+Vue.prototype.$message = Message;
+Vue.prototype.$axios = axios;
 
 const routes = [{
   path: '/',

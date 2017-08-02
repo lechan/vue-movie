@@ -1,14 +1,36 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-default/index.css';
+import { 
+  Button, 
+  Card, 
+  Row,
+  Col,
+  Icon,
+  Tabs,
+  TabPane,
+  Input,
+  Loading,
+  Message
+} from 'element-ui';
 import App from './App.vue';
 import store from './store';
 import list from './components/list.vue';
 import detail from './components/detail.vue';
 
 Vue.use(VueRouter);
-Vue.use(ElementUI);
+Vue.use(Button);
+Vue.use(Card);
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Icon);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Input);
+Vue.use(Loading);
+
+
+Vue.prototype.$loading = Loading.service;
+Vue.prototype.$message = Message
 
 const routes = [{
   path: '/',

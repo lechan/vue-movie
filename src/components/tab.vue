@@ -42,6 +42,11 @@
         this.tabData = data;
         this.$store.dispatch('changeTab',this.$route.query.typeCode || data[0].type_code);
       });
+    },
+    watch: {
+      '$route'() {
+        this.$store.dispatch('changeTab',this.$route.query.typeCode || data[0].type_code);
+      }
     }
   };
 </script>

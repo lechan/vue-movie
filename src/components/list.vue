@@ -111,6 +111,9 @@
           this.isEnd = false;
           this.renderList(this.searchPageNumber);
           this.$store.dispatch('changeInput',this.keyWord);
+        }else{
+          this.loading = true;
+          this.renderList(this.p[this.typeCode]);
         }
       }
     }

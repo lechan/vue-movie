@@ -51,6 +51,9 @@ export default {
   watch: {
     keyWord() {
       this.searchInput = this.keyWord;
+    },
+    '$route'() {
+      this.$store.dispatch('changeInput',this.$route.query.keyWord || '');
     }
   }
 }
